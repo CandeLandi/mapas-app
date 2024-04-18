@@ -47,22 +47,22 @@ export class MarkersPageComponent implements AfterViewInit {
 
     const color = '#xxxxxx'.replace(/x/g, y => (Math.random() * 16 | 0).toString(16));
     const lngLat = this.map.getCenter()
-
+    console.log(LngLat)
     this.addMarker(lngLat, color);
 
   }
 
 
   addMarker(lngtLat: LngLat, color: string) {
-    if ( !this.map ) return;
-
+    if (!this.map) return;
+    console.log(lngtLat)
     const marker = new Marker({
       color: color,
-      draggable: true
+      draggable: true,
     })
-      .setLngLat( lngtLat )
-      .addTo( this.map );
-
+      .setLngLat(lngtLat)
+      .addTo(this.map);
+ 
     this.markers.push({ color, marker })
   }
 
@@ -75,6 +75,7 @@ export class MarkersPageComponent implements AfterViewInit {
     this.map?.flyTo({
       zoom: 14,
       center: marker.getLngLat()
+
     })
   }
 
