@@ -1,16 +1,20 @@
+
 <div id="map" #map></div>
 
-<ul class="list-group">
-    <li *ngFor="let colorMarker of markers; let i = index " 
-    [ngStyle]="{ backgroundColor:colorMarker.color }"
-    (click)="flyTo( colorMarker.marker )"
-    (dblclick)="deleteMarker(i)"
-    class="list-group-item">
-        Marker {{ i +1 }}
-    </li>
 
+<ul class="list-group">
+  <li *ngFor="let colorMarker of markers; let i = index"
+    [ngStyle]="{ backgroundColor:colorMarker.color}"
+    (dblclick)="deleteMarker(i)"
+    (click)="flyTo( colorMarker.marker)"
+     class="list-group-item">
+    Marker {{ i + 1 }}
+  </li>
 </ul>
 
-<button (click)="createMarket()" class="btn btn-primary">
-    + Agregar marcador
+
+
+<button (click)="createMarket()"  class="btn btn-primary">
+  + Agregar marcador
 </button>
+

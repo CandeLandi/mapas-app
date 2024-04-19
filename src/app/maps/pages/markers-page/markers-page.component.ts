@@ -6,6 +6,11 @@ interface MarketAndColor {
   marker: Marker;
 }
 
+interface PlainMarker {
+  color: string;
+  lngLat: number[];
+}
+
 @Component({
   selector: 'app-markers-page',
   templateUrl: './markers-page.component.html',
@@ -17,28 +22,30 @@ export class MarkersPageComponent implements AfterViewInit {
 
   public markers: MarketAndColor[] = [];
   public map?: Map;
-  public currentLngLat: LngLat = new LngLat(-59.02356279048762, -34.73097518030841);
+
+  public currentLngLat: LngLat = new LngLat(-74.10380784179445, 4.651165392795477);
 
   ngAfterViewInit(): void {
 
     if (!this.divMap) throw 'El elemento HTML no fue encontrado';
 
     this.map = new Map({
-      container: this.divMap?.nativeElement, // container ID
+      container: this.divMap.nativeElement, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this.currentLngLat,
-      zoom: 13 // starting position [lng, lat]// starting zoom
+      zoom: 13, // starting position [lng, lat]// starting zoom
     });
 
     /*     const markerHtml = document.createElement('div');
         markerHtml.innerHTML = 'Candela Landi'
-    
+
         const marker = new Marker({
           color: 'red',
           element: markerHtml
         })
           .setLngLat(this.currentLngLat)
           .addTo(this.map) */
+    this.readFromToLocalStorage();
   }
 
 
@@ -46,8 +53,10 @@ export class MarkersPageComponent implements AfterViewInit {
     if (!this.map) return;
 
     const color = '#xxxxxx'.replace(/x/g, y => (Math.random() * 16 | 0).toString(16));
+
     const lngLat = this.map.getCenter()
     console.log(LngLat)
+
     this.addMarker(lngLat, color);
 
   }
@@ -62,8 +71,12 @@ export class MarkersPageComponent implements AfterViewInit {
     })
       .setLngLat(lngtLat)
       .addTo(this.map);
- 
+
+
     this.markers.push({ color, marker })
+    this.saveToLocalStorage();
+
+    marker.on('dragend', () => this.saveToLocalStorage())
   }
 
   deleteMarker(index: number) {
@@ -78,5 +91,28 @@ export class MarkersPageComponent implements AfterViewInit {
 
     })
   }
+
+  saveToLocalStorage() {
+    const plainMarkers: PlainMarker[] = this.markers.map(({ color, marker }) => {
+      return {
+        color,
+        lngLat: marker.getLngLat().toArray(),
+      }
+    })
+    localStorage.setItem('plainMarkers', JSON.stringify(plainMarkers))
+  }
+
+  readFromToLocalStorage() {
+    const plainMarkersString = localStorage.getItem('plainMarkers') ?? '[]';
+    const plainMarkers: PlainMarker[] = JSON.parse(plainMarkersString) //!OJO no es seguro
+
+    plainMarkers.forEach(({ color, lngLat }) => {
+      const [lng, lat] = lngLat;
+      const coords = new LngLat(lng, lat);
+
+      this.addMarker(coords, color)
+    });
+  }
+
 
 }

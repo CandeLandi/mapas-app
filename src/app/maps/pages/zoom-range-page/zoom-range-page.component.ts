@@ -7,14 +7,14 @@ import { Map, LngLat } from 'mapbox-gl';
   styleUrl: './zoom-range-page.component.scss'
 })
 export class ZoomRangePageComponent implements AfterViewInit, OnDestroy {
- 
+
 
 
   @ViewChild('map') divMap?: ElementRef;
 
   public zoom: number = 10;
   public map?: Map;
-  public currentLngLat: LngLat = new LngLat(-59.02356279048762, -34.73097518030841);
+  public currentLngLat: LngLat = new LngLat(-74.10380784179445, 4.651165392795477);
 
   ngAfterViewInit(): void {
 
