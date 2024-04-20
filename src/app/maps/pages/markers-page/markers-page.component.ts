@@ -27,12 +27,13 @@ export class MarkersPageComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    if (!this.divMap) throw 'El elemento HTML no fue encontrado';
+  if (!this.divMap) throw 'El elemento HTML no fue encontrado';
 
     this.map = new Map({
       container: this.divMap.nativeElement, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: this.currentLngLat,
+      attributionControl: false,
       zoom: 13, // starting position [lng, lat]// starting zoom
     });
 
