@@ -17,7 +17,7 @@ const routes: Routes = [
       { path: 'markers', component: MarkersPageComponent },
       { path: 'properties', component: PropertiesPageComponent },
       { path: '**', redirectTo: 'fullScreen' }
-    ] 
+    ]
   }
 ];
 
